@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload Document</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Document upload</span></span></div>
+        <nav class="nav-actions"><a class="nav-link" href="donor.html">Donor Portal</a><a class="nav-link" href="donor-appointment.html">Appointment</a></nav>
+      </div>
+    </header>
+    <main class="container">
+      <section class="panel">
+        <div class="panel-header"><div><h1>Upload Document</h1><p>Store donor medical documents for administrative review.</p></div><span class="pill info">Process 5.0</span></div>
+        <div class="panel-body">
+          <form class="form-grid">
+            <label>Document type<select><option>Medical certificate</option><option>Previous donation card</option><option>Identity document</option></select></label>
+            <label>Upload date<input type="date" value="2026-05-24"></label>
+            <label class="full">File<input type="file"></label>
+            <label class="full">Notes<textarea>Document submitted for blood donation eligibility review.</textarea></label>
+            <button class="btn-primary full" type="button" data-action="upload">Upload Document</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="toast"></div>
+</body>
+</html>

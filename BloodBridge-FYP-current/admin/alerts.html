@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matching Alerts</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Matching alerts</span></span></div>
+        <nav class="nav-actions"><a class="nav-link" href="index.html">Admin Portal</a><a class="nav-link" href="inventory.html">Inventory</a></nav>
+      </div>
+    </header>
+    <main class="container">
+      <section class="grid grid-2">
+        <div class="panel">
+          <div class="panel-header"><div><h1>Matching Alert</h1><p>Notify suitable donors when inventory is low.</p></div><span class="pill bad">Critical O-</span></div>
+          <div class="panel-body">
+            <form class="form-grid">
+              <label>Needed blood type<select><option>O-</option><option>A+</option><option>O+</option><option>B+</option></select></label>
+              <label>Radius<select><option>10 km</option><option>25 km</option><option>50 km</option></select></label>
+              <label class="full">Message<textarea>O- blood stock is low. Eligible donors are invited to book the earliest available appointment.</textarea></label>
+              <button class="btn-primary full" type="button" data-action="alert">Send Matching Alert</button>
+            </form>
+          </div>
+        </div>
+        <aside class="panel">
+          <div class="panel-header"><div><h2>Matched Donors</h2><p>Suitable donors based on blood type and location.</p></div><span class="pill info">7 sent</span></div>
+          <div class="panel-body records">
+            <div class="record-card"><div><strong>Gan Hui Min</strong><span>O- donor, 6 km from event venue.</span></div><span class="pill ok">Matched</span></div>
+            <div class="record-card"><div><strong>Lee Wen Kai</strong><span>O- donor, 9 km from event venue.</span></div><span class="pill ok">Matched</span></div>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+  <div class="toast"></div>
+</body>
+</html>
