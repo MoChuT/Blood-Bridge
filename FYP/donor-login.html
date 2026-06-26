@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Donor Login</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Donor login</span></span></div>
+        <nav class="nav-actions"><a class="nav-link" href="donor.html">Donor Portal</a><a class="nav-link" href="index.html">Function Map</a></nav>
+      </div>
+    </header>
+    <main class="container">
+      <section class="grid grid-2">
+        <div class="panel">
+          <div class="panel-header"><div><h1>Donor Login</h1><p>Verify donor account before accessing donation services.</p></div><span class="pill info">Account</span></div>
+          <div class="panel-body">
+            <form class="form-grid">
+              <label class="full">Donor ID<input value="DNR-1008"></label>
+              <label class="full">Password<input type="password" value="password123"></label>
+              <button class="btn-primary full" type="button" data-action="login">Login</button>
+            </form>
+          </div>
+        </div>
+        <aside class="panel">
+          <div class="panel-header"><div><h2>Login Status</h2><p>Account data verification result.</p></div><span class="pill ok">Ready</span></div>
+          <div class="panel-body records">
+            <div class="record-card"><div><strong>Donor account</strong><span>Linked to active donor profile and health record.</span></div><span class="pill ok">Active</span></div>
+            <div class="record-card"><div><strong>Last access</strong><span>May 24, 2026, 09:15 AM</span></div><span class="pill info">Verified</span></div>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+  <div class="toast"></div>
+</body>
+</html>
