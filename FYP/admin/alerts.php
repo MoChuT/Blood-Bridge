@@ -42,7 +42,9 @@ foreach ($donors as $donor) {
         <div class="panel">
           <div class="panel-header"><div><h1>Matching Alert</h1><p>Notify suitable donors when inventory is low.</p></div><span class="pill bad">Critical O-</span></div>
           <div class="panel-body">
-            <form class="form-grid" method="get" action="alerts.php">
+            <form class="form-grid" method="post" action="../actions.php">
+              <input type="hidden" name="action" value="alert">
+              <input type="hidden" name="back" value="admin/alerts.php">
               <label>Needed blood type
   <select name="blood_type">
     <option value="">Select blood type</option>
@@ -56,6 +58,7 @@ foreach ($donors as $donor) {
     <option> O- </option>
   </select>
 </label>
+              <label>Radius<select name="radius"><option value="">Select radius</option><option>10 km</option><option>25 km</option><option>50 km</option></select></label>
               <label class="full">Message<textarea name="message"></textarea></label>
               <button class="btn-primary full" type="submit">Send Matching Alert</button>
             </form>

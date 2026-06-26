@@ -33,6 +33,7 @@ $donations = read_records('donation_records');
               <input type="hidden" name="action" value="donation">
               <input type="hidden" name="back" value="admin/donations.php">
               <label>Donor name<input name="donor_name"></label>
+              <label>Donor email<input name="donor_email" type="email"></label>
               <label>Blood type
   <select name="blood_type">
     <option value="">Select blood type</option>
@@ -73,6 +74,7 @@ $donations = read_records('donation_records');
                 </strong>
 
                 <span>
+                    <?= h((string)($donation['donor_email'] ?? 'No email')); ?>,
                     <?= h((string)$donation['result']); ?> donation,
                     <?= h((string)$donation['blood_type']); ?>
                 </span>

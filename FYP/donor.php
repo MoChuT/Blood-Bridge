@@ -29,7 +29,7 @@
       <section class="hero">
         <div>
           <h1>Manage your blood donation journey.</h1>
-          <p>Update your profile, complete screening, upload supporting documents, view announcements, and request an appointment from one portal.</p>
+          <p>Update your profile, complete screening, upload supporting documents, view announcements, track donation history, and request an appointment from one portal.</p>
         </div>
         <div class="hero-card">
           <div class="hero-stat">
@@ -46,6 +46,8 @@
         <a class="function-card" href="donor-screening.php"><span class="card-icon">H</span><h2>Health Screening</h2><p>Submit questionnaire answers for eligibility.</p></a>
         <a class="function-card" href="donor-document.php"><span class="card-icon">D</span><h2>Upload Document</h2><p>Upload medical or identity documents.</p></a>
         <a class="function-card" href="donor-appointment.php"><span class="card-icon">A</span><h2>Do Appointment</h2><p>Select preferred date and time.</p></a>
+        <a class="function-card" href="donor-history.php"><span class="card-icon">90</span><h2>Donation History</h2><p>View past donation records and eligibility countdown.</p></a>
+        <a class="function-card" href="donor-alerts.php"><span class="card-icon">AL</span><h2>Alert Inbox</h2><p>View emergency alerts matching your blood type.</p></a>
       </section>
     </main>
   </div>

@@ -60,6 +60,7 @@ if (empty($_SESSION['admin_logged_in'])) {
 
       <section class="grid grid-3 section-gap">
         <a class="function-card" href="donor-records.php"><span class="card-icon">DR</span><h2>Donor Records</h2><p>View donor profile and health details.</p></a>
+        <a class="function-card" href="documents.php"><span class="card-icon">DV</span><h2>Document Verification</h2><p>Review uploaded donor medical documents.</p></a>
         <a class="function-card" href="appointments.php"><span class="card-icon">AP</span><h2>Appointment Approval</h2><p>Approve or reject appointment requests.</p></a>
         <a class="function-card" href="inventory.php"><span class="card-icon">BI</span><h2>Blood Inventory</h2><p>Add, edit, delete and view inventory records.</p></a>
         <a class="function-card" href="announcements.php"><span class="card-icon">AN</span><h2>Announcements</h2><p>Manage public event information.</p></a>

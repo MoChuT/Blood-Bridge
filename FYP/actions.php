@@ -124,10 +124,13 @@ switch ($action) {
         }
 
         append_record('documents', [
+            'donor_name' => $_SESSION['donor_name'] ?? '',
+            'donor_email' => $_SESSION['donor_email'] ?? '',
             'document_type' => post_value('document_type'),
             'upload_date' => post_value('upload_date'),
             'notes' => post_value('notes'),
             'file_name' => $fileName,
+            'status' => 'Pending review',
         ]);
         flash('Document uploaded', 'Document storage record has been created.');
         redirect_to($back);
@@ -300,6 +303,7 @@ case 'update_document_status':
 
     append_record('donation_records', [
         'donor_name' => post_value('donor_name'),
+        'donor_email' => strtolower(post_value('donor_email')),
         'blood_type' => $bloodType,
         'donation_date' => post_value('donation_date'),
         'result' => $result,
@@ -318,9 +322,10 @@ case 'update_document_status':
 
     case 'alert':
         append_record('matching_alerts', [
-    'blood_type' => post_value('blood_type'),
-    'message' => post_value('message'),
-]);
+            'blood_type' => post_value('blood_type'),
+            'radius' => post_value('radius'),
+            'message' => post_value('message'),
+        ]);
         flash('Matching alert sent', 'Suitable donors have been notified.');
         redirect_to($back);
 }

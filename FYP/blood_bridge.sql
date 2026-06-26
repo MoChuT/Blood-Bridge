@@ -47,16 +47,31 @@ CREATE TABLE IF NOT EXISTS `profile_updates` (
 
 CREATE TABLE IF NOT EXISTS `documents` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `donor_name` VARCHAR(160) DEFAULT NULL,
+  `donor_email` VARCHAR(180) DEFAULT NULL,
   `document_type` VARCHAR(120) DEFAULT NULL,
   `upload_date` DATE DEFAULT NULL,
   `notes` TEXT DEFAULT NULL,
   `file_name` VARCHAR(255) DEFAULT NULL,
+  `status` VARCHAR(80) NOT NULL DEFAULT 'Pending review',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `appointment_slots` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `slot_date` DATE DEFAULT NULL,
+  `slot_time` TIME DEFAULT NULL,
+  `venue` VARCHAR(180) DEFAULT NULL,
+  `status` VARCHAR(80) NOT NULL DEFAULT 'Open',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `appointments` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `donor_name` VARCHAR(160) DEFAULT NULL,
+  `donor_email` VARCHAR(180) DEFAULT NULL,
   `preferred_date` DATE DEFAULT NULL,
   `preferred_time` TIME DEFAULT NULL,
   `venue` VARCHAR(180) DEFAULT NULL,
@@ -97,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `announcements` (
 CREATE TABLE IF NOT EXISTS `donation_records` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `donor_name` VARCHAR(160) DEFAULT NULL,
+  `donor_email` VARCHAR(180) DEFAULT NULL,
   `blood_type` VARCHAR(5) DEFAULT NULL,
   `donation_date` DATE DEFAULT NULL,
   `result` VARCHAR(80) DEFAULT NULL,
@@ -124,3 +140,15 @@ WHERE (SELECT COUNT(*) FROM `announcements`) = 1;
 INSERT INTO `announcements` (`title`, `status`, `event_date`, `details`)
 SELECT 'Health Screening Reminder', 'Notice', '2026-05-14', 'Complete screening before appointment confirmation.'
 WHERE (SELECT COUNT(*) FROM `announcements`) = 2;
+
+ALTER TABLE `documents`
+  ADD COLUMN IF NOT EXISTS `donor_name` VARCHAR(160) DEFAULT NULL AFTER `id`,
+  ADD COLUMN IF NOT EXISTS `donor_email` VARCHAR(180) DEFAULT NULL AFTER `donor_name`,
+  ADD COLUMN IF NOT EXISTS `status` VARCHAR(80) NOT NULL DEFAULT 'Pending review' AFTER `file_name`;
+
+ALTER TABLE `appointments`
+  ADD COLUMN IF NOT EXISTS `donor_name` VARCHAR(160) DEFAULT NULL AFTER `id`,
+  ADD COLUMN IF NOT EXISTS `donor_email` VARCHAR(180) DEFAULT NULL AFTER `donor_name`;
+
+ALTER TABLE `donation_records`
+  ADD COLUMN IF NOT EXISTS `donor_email` VARCHAR(180) DEFAULT NULL AFTER `donor_name`;
