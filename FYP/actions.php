@@ -15,7 +15,18 @@ switch ($action) {
     $username = post_value('username');
     $password = post_value('password');
 
-    if ($username === 'admin' && $password === 'admin123') {
+    $adminMatched = false;
+    try {
+        $statement = db()->prepare('SELECT * FROM `ADMIN_ACCOUNT` WHERE `Username` = :username AND `Password` = :password LIMIT 1');
+        $statement->bindValue(':username', $username);
+        $statement->bindValue(':password', $password);
+        $statement->execute();
+        $adminMatched = (bool)$statement->fetch();
+    } catch (PDOException) {
+        $adminMatched = $username === 'admin' && $password === 'admin123';
+    }
+
+    if ($adminMatched) {
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['admin_username'] = $username;
 
@@ -55,6 +66,7 @@ switch ($action) {
             'blood_type' => post_value('blood_type'),
             'phone' => $phone,
             'email' => $email,
+            'gender' => post_value('gender'),
             'address' => post_value('address'),
             'date_of_birth' => post_value('date_of_birth'),
             'emergency_contact' => post_value('emergency_contact'),
@@ -104,6 +116,7 @@ switch ($action) {
             'blood_type' => post_value('blood_type'),
             'phone' => post_value('phone'),
             'email' => post_value('email'),
+            'gender' => post_value('gender'),
             'address' => post_value('address'),
             'emergency_contact' => post_value('emergency_contact'),
             'status' => 'Pending admin review',
@@ -304,6 +317,7 @@ case 'update_document_status':
     append_record('donation_records', [
         'donor_name' => post_value('donor_name'),
         'donor_email' => strtolower(post_value('donor_email')),
+        'appointment_id' => post_value('appointment_id'),
         'blood_type' => $bloodType,
         'donation_date' => post_value('donation_date'),
         'result' => $result,

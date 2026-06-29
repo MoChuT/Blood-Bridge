@@ -5,6 +5,7 @@ if (empty($_SESSION['admin_logged_in'])) {
     redirect_to('login.php');
 }
 $donations = read_records('donation_records');
+$appointments = read_records('appointments');
 ?>
 <!doctype html>
 <html lang="en">
@@ -34,6 +35,7 @@ $donations = read_records('donation_records');
               <input type="hidden" name="back" value="admin/donations.php">
               <label>Donor name<input name="donor_name"></label>
               <label>Donor email<input name="donor_email" type="email"></label>
+              <label class="full">Appointment ID<select name="appointment_id"><option value="">Select appointment</option><?php foreach ($appointments as $appointment): ?><option value="<?= h((string)$appointment['id']); ?>">APT-<?= h((string)$appointment['id']); ?> - <?= h((string)($appointment['donor_name'] ?? 'Unknown donor')); ?> - <?= h((string)($appointment['status'] ?? 'Pending')); ?></option><?php endforeach; ?></select></label>
               <label>Blood type
   <select name="blood_type">
     <option value="">Select blood type</option>
@@ -74,6 +76,7 @@ $donations = read_records('donation_records');
                 </strong>
 
                 <span>
+                    Appointment <?= h((string)($donation['appointment_id'] ?? 'N/A')); ?>,
                     <?= h((string)($donation['donor_email'] ?? 'No email')); ?>,
                     <?= h((string)$donation['result']); ?> donation,
                     <?= h((string)$donation['blood_type']); ?>

@@ -40,6 +40,7 @@ foreach ($donors as $donor) {
             <label>Blood type<select name="blood_type"><option value="">Select blood type</option><?php foreach (['A+','O+','B+','AB+','A-','O-','B-','AB-'] as $type): ?><option <?= (($currentDonor['blood_type'] ?? '') === $type) ? 'selected' : ''; ?>><?= h($type); ?></option><?php endforeach; ?></select></label>
             <label>Phone<input name="phone" value="<?= h((string)($currentDonor['phone'] ?? '')); ?>"></label>
             <label>Email<input name="email" type="email" value="<?= h((string)($currentDonor['email'] ?? '')); ?>"></label>
+            <label>Gender<select name="gender"><option value="">Select gender</option><?php foreach (['Male','Female'] as $gender): ?><option <?= (($currentDonor['gender'] ?? '') === $gender) ? 'selected' : ''; ?>><?= h($gender); ?></option><?php endforeach; ?></select></label>
             <label>Emergency contact<input name="emergency_contact" value="<?= h((string)($currentDonor['emergency_contact'] ?? '')); ?>"></label>
             <label class="full">Address<input name="address" value="<?= h((string)($currentDonor['address'] ?? '')); ?>"></label>
             <button class="btn-primary full" type="submit">Submit Profile Update</button>

@@ -28,6 +28,7 @@
             <label>Blood type<select name="blood_type" required><option value="">Select blood type</option><option>A+</option><option>O+</option><option>B+</option><option>AB+</option><option>A-</option><option>O-</option></select></label>
             <label>Phone<input name="phone" required></label>
             <label>Email<input name="email" type="email" required></label>
+            <label>Gender<select name="gender" required><option value="">Select gender</option><option>Male</option><option>Female</option></select></label>
             <label>Password<input name="password" type="password" required></label>
             <label>Date of birth<input name="date_of_birth" type="date"></label>
             <label>Address<input name="address"></label>

@@ -34,7 +34,8 @@ $donors = read_records('donors');
                 <strong><?= h((string)($donor['full_name'] ?? 'Unnamed donor')); ?></strong>
                 <span>
                   <?= h((string)($donor['blood_type'] ?? 'Unknown')); ?> donor,
-                  <?= h((string)($donor['email'] ?? 'No email')); ?>
+                  <?= h((string)($donor['email'] ?? 'No email')); ?>,
+                  <?= h((string)($donor['gender'] ?? 'No gender')); ?>
                 </span>
               </div>
 

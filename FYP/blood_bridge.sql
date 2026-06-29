@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `donors` (
   `blood_type` VARCHAR(5) DEFAULT NULL,
   `phone` VARCHAR(40) DEFAULT NULL,
   `email` VARCHAR(180) DEFAULT NULL,
+  `gender` VARCHAR(20) DEFAULT NULL,
   `address` TEXT DEFAULT NULL,
   `date_of_birth` DATE DEFAULT NULL,
   `emergency_contact` VARCHAR(160) DEFAULT NULL,
@@ -36,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `profile_updates` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `full_name` VARCHAR(160) DEFAULT NULL,
   `blood_type` VARCHAR(5) DEFAULT NULL,
+  `gender` VARCHAR(20) DEFAULT NULL,
   `phone` VARCHAR(40) DEFAULT NULL,
   `email` VARCHAR(180) DEFAULT NULL,
   `address` TEXT DEFAULT NULL,
@@ -113,6 +115,7 @@ CREATE TABLE IF NOT EXISTS `donation_records` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `donor_name` VARCHAR(160) DEFAULT NULL,
   `donor_email` VARCHAR(180) DEFAULT NULL,
+  `appointment_id` INT UNSIGNED DEFAULT NULL,
   `blood_type` VARCHAR(5) DEFAULT NULL,
   `donation_date` DATE DEFAULT NULL,
   `result` VARCHAR(80) DEFAULT NULL,
@@ -129,6 +132,15 @@ CREATE TABLE IF NOT EXISTS `matching_alerts` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `ADMIN_ACCOUNT` (
+  `Admin_ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Username` VARCHAR(80) NOT NULL,
+  `Password` VARCHAR(120) NOT NULL,
+  `Role` VARCHAR(80) NOT NULL DEFAULT 'Administrative Staff',
+  PRIMARY KEY (`Admin_ID`),
+  UNIQUE KEY `idx_admin_username` (`Username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 INSERT INTO `announcements` (`title`, `status`, `event_date`, `details`)
 SELECT 'MMU Blood Donation Drive', 'Published', '2026-05-12', 'Main Hall, May 12-13, 2026. Bring identification and eat before donating.'
 WHERE NOT EXISTS (SELECT 1 FROM `announcements`);
@@ -141,6 +153,10 @@ INSERT INTO `announcements` (`title`, `status`, `event_date`, `details`)
 SELECT 'Health Screening Reminder', 'Notice', '2026-05-14', 'Complete screening before appointment confirmation.'
 WHERE (SELECT COUNT(*) FROM `announcements`) = 2;
 
+INSERT INTO `ADMIN_ACCOUNT` (`Username`, `Password`, `Role`)
+SELECT 'admin', 'admin123', 'Administrative Staff'
+WHERE NOT EXISTS (SELECT 1 FROM `ADMIN_ACCOUNT` WHERE `Username` = 'admin');
+
 ALTER TABLE `documents`
   ADD COLUMN IF NOT EXISTS `donor_name` VARCHAR(160) DEFAULT NULL AFTER `id`,
   ADD COLUMN IF NOT EXISTS `donor_email` VARCHAR(180) DEFAULT NULL AFTER `donor_name`,
@@ -152,3 +168,74 @@ ALTER TABLE `appointments`
 
 ALTER TABLE `donation_records`
   ADD COLUMN IF NOT EXISTS `donor_email` VARCHAR(180) DEFAULT NULL AFTER `donor_name`;
+
+ALTER TABLE `donors`
+  ADD COLUMN IF NOT EXISTS `gender` VARCHAR(20) DEFAULT NULL AFTER `email`;
+
+ALTER TABLE `profile_updates`
+  ADD COLUMN IF NOT EXISTS `gender` VARCHAR(20) DEFAULT NULL AFTER `blood_type`;
+
+ALTER TABLE `donation_records`
+  ADD COLUMN IF NOT EXISTS `appointment_id` INT UNSIGNED DEFAULT NULL AFTER `donor_email`;
+
+DROP VIEW IF EXISTS `DONOR`;
+CREATE VIEW `DONOR` AS
+SELECT
+  `id` AS `Donor_ID`,
+  `full_name` AS `Name`,
+  `blood_type` AS `BloodType`,
+  `email` AS `Email`,
+  `gender` AS `Gender`
+FROM `donors`;
+
+DROP VIEW IF EXISTS `DOCUMENT`;
+CREATE VIEW `DOCUMENT` AS
+SELECT
+  d.`id` AS `Document_ID`,
+  donor.`id` AS `Donor_ID`,
+  d.`file_name` AS `FilePath`,
+  d.`upload_date` AS `UploadDate`
+FROM `documents` d
+LEFT JOIN `donors` donor ON donor.`email` = d.`donor_email`;
+
+DROP VIEW IF EXISTS `HEALTH_RECORD`;
+CREATE VIEW `HEALTH_RECORD` AS
+SELECT
+  h.`id` AS `Health_ID`,
+  donor.`id` AS `Donor_ID`,
+  h.`eligibility_status` AS `EligibilityStatus`,
+  h.`result` AS `Result`
+FROM `health_records` h
+LEFT JOIN `donors` donor ON donor.`email` = h.`donor_key` OR donor.`phone` = h.`donor_key`;
+
+DROP VIEW IF EXISTS `APPOINTMENT`;
+CREATE VIEW `APPOINTMENT` AS
+SELECT
+  a.`id` AS `Appointment_ID`,
+  donor.`id` AS `Donor_ID`,
+  1 AS `Admin_ID`,
+  a.`preferred_date` AS `Date`,
+  a.`preferred_time` AS `Time`,
+  a.`status` AS `Status`
+FROM `appointments` a
+LEFT JOIN `donors` donor ON donor.`email` = a.`donor_email`;
+
+DROP VIEW IF EXISTS `DONATION_RECORD`;
+CREATE VIEW `DONATION_RECORD` AS
+SELECT
+  r.`id` AS `Record_ID`,
+  donor.`id` AS `Donor_ID`,
+  r.`appointment_id` AS `Appointment_ID`,
+  r.`donation_date` AS `DonationDate`,
+  r.`result` AS `Result`
+FROM `donation_records` r
+LEFT JOIN `donors` donor ON donor.`email` = r.`donor_email`;
+
+DROP VIEW IF EXISTS `BLOOD_INVENTORY`;
+CREATE VIEW `BLOOD_INVENTORY` AS
+SELECT
+  i.`id` AS `Inventory_ID`,
+  i.`blood_type` AS `BloodType`,
+  i.`quantity_update` AS `Quantity`,
+  i.`last_updated` AS `LastUpdated`
+FROM `inventory_updates` i;
