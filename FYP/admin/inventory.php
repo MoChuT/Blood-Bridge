@@ -50,7 +50,7 @@ function stock_percent(int $qty): int
     <header class="topbar">
       <div class="topbar-inner">
         <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Blood inventory</span></span></div>
-        <nav class="nav-actions"><a class="nav-link" href="index.php">Admin Portal</a><a class="nav-link" href="alerts.php">Matching Alerts</a></nav>
+        <nav class="nav-actions"><a class="nav-link" href="index.php">Admin Portal</a></nav>
       </div>
     </header>
     <main class="container">

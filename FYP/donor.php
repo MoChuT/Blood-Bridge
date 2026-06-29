@@ -1,4 +1,50 @@
-<?php require __DIR__ . '/includes/storage.php'; ?>
+<?php
+require __DIR__ . '/includes/storage.php';
+
+$slots = read_records('appointment_slots');
+$appointments = read_records('appointments');
+$today = date('Y-m-d');
+$availableSlots = 0;
+$nextEventDate = null;
+$latestAppointment = null;
+
+foreach ($slots as $slot) {
+    if (($slot['status'] ?? 'Open') !== 'Open') {
+        continue;
+    }
+
+    $slotDate = (string)($slot['slot_date'] ?? '');
+    if ($slotDate === '' || $slotDate < $today) {
+        continue;
+    }
+
+    $availableSlots++;
+    if ($nextEventDate === null || $slotDate < $nextEventDate) {
+        $nextEventDate = $slotDate;
+    }
+}
+
+foreach ($appointments as $appointment) {
+    if (
+        !empty($_SESSION['donor_email']) &&
+        strtolower((string)($appointment['donor_email'] ?? '')) === strtolower((string)$_SESSION['donor_email'])
+    ) {
+        $latestAppointment = $appointment;
+        break;
+    }
+}
+
+$nextEventLabel = $nextEventDate ? date('M d, Y', strtotime($nextEventDate)) : 'No upcoming event';
+$statusLabel = $availableSlots > 0 ? 'Open' : 'Closed';
+
+if ($latestAppointment) {
+    $appointmentDate = (string)($latestAppointment['preferred_date'] ?? '');
+    if ($appointmentDate !== '') {
+        $nextEventLabel = date('M d, Y', strtotime($appointmentDate));
+    }
+    $statusLabel = (string)($latestAppointment['status'] ?? 'Pending approval');
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,6 +65,7 @@
           </span>
         </div>
         <nav class="nav-actions">
+          <a class="nav-link" href="donor-announcements.php">Announcements</a>
           <a class="nav-link" href="index.php">Function Map</a>
         </nav>
       </div>
@@ -28,21 +75,20 @@
       <?= flash_markup(); ?>
       <section class="hero">
         <div>
-          <h1>Manage your blood donation journey.</h1>
-          <p>Update your profile, complete screening, upload supporting documents, view announcements, track donation history, and request an appointment from one portal.</p>
+          <h1>Thank you for being a blood donor.</h1>
+          <p>Your willingness to donate helps support patients and blood donation drives. Use this portal to keep your information updated and continue your donation journey.</p>
         </div>
         <div class="hero-card">
           <div class="hero-stat">
-            <div><span>Next event</span><strong>May 12, 2026</strong></div>
-            <div><span>Available slots</span><strong>23</strong></div>
-            <div><span>Status</span><strong>Open</strong></div>
+            <div><span>Next event</span><strong><?= h($nextEventLabel); ?></strong></div>
+            <div><span>Available slots</span><strong><?= h((string)$availableSlots); ?></strong></div>
+            <div><span>Status</span><strong><?= h($statusLabel); ?></strong></div>
           </div>
         </div>
       </section>
 
       <section class="grid grid-3 section-gap">
         <a class="function-card" href="donor-profile.php"><span class="card-icon">P</span><h2>Modify Profile</h2><p>Submit updated donor contact and profile details.</p></a>
-        <a class="function-card" href="donor-announcements.php"><span class="card-icon">N</span><h2>Announcements</h2><p>View event notices and reminders.</p></a>
         <a class="function-card" href="donor-screening.php"><span class="card-icon">H</span><h2>Health Screening</h2><p>Submit questionnaire answers for eligibility.</p></a>
         <a class="function-card" href="donor-document.php"><span class="card-icon">D</span><h2>Upload Document</h2><p>Upload medical or identity documents.</p></a>
         <a class="function-card" href="donor-appointment.php"><span class="card-icon">A</span><h2>Do Appointment</h2><p>Select preferred date and time.</p></a>

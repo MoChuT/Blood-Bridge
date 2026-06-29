@@ -5,8 +5,17 @@ if (empty($_SESSION['donor_email'])) {
     redirect_to('donor-login.php');
 }
 
-$slots = read_records('appointment_slots');
+$allSlots = read_records('appointment_slots');
 $appointments = read_records('appointments');
+$today = date('Y-m-d');
+$slots = [];
+
+foreach ($allSlots as $slot) {
+    $slotDate = (string)($slot['slot_date'] ?? '');
+    if (($slot['status'] ?? 'Open') === 'Open' && $slotDate !== '' && $slotDate >= $today) {
+        $slots[] = $slot;
+    }
+}
 
 $myAppointments = [];
 foreach ($appointments as $appointment) {
@@ -31,7 +40,7 @@ $myAppointments = array_slice($myAppointments, 0, 3);
     <header class="topbar">
       <div class="topbar-inner">
         <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Appointment booking</span></span></div>
-        <nav class="nav-actions"><a class="nav-link" href="donor.php">Donor Portal</a><a class="nav-link" href="donor-announcements.php">Announcements</a></nav>
+        <nav class="nav-actions"><a class="nav-link" href="donor.php">Donor Portal</a></nav>
       </div>
     </header>
 

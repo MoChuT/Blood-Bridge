@@ -36,7 +36,7 @@ foreach ($alerts as $alert) {
     <header class="topbar">
       <div class="topbar-inner">
         <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Alert inbox</span></span></div>
-        <nav class="nav-actions"><a class="nav-link" href="donor.php">Donor Portal</a><a class="nav-link" href="donor-announcements.php">Announcements</a></nav>
+        <nav class="nav-actions"><a class="nav-link" href="donor.php">Donor Portal</a></nav>
       </div>
     </header>
     <main class="container">

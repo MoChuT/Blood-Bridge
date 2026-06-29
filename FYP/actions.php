@@ -252,6 +252,10 @@ case 'delete_slot':
         'status' => 'Pending approval',
     ]);
 
+    $updateSlot = db()->prepare("UPDATE appointment_slots SET status = 'Booked' WHERE id = :id");
+    $updateSlot->bindValue(':id', $slotId, PDO::PARAM_INT);
+    $updateSlot->execute();
+
     flash('Appointment requested', 'Your appointment is waiting for admin approval.');
     redirect_to($back);
 
@@ -268,6 +272,21 @@ case 'delete_slot':
     $statement->execute();
 
     flash('Donor verified', 'The donor status has been updated to Verified.');
+    redirect_to($back);
+
+    case 'reject_donor':
+    $donorId = (int) post_value('donor_id');
+
+    if ($donorId <= 0) {
+        flash('Rejection failed', 'Invalid donor ID.', 'bad');
+        redirect_to($back);
+    }
+
+    $statement = db()->prepare("UPDATE donors SET status = 'Rejected' WHERE id = :id");
+    $statement->bindValue(':id', $donorId, PDO::PARAM_INT);
+    $statement->execute();
+
+    flash('Donor rejected', 'The donor status has been updated to Rejected.');
     redirect_to($back);
 
     case 'update_profile_request_status':

@@ -28,7 +28,7 @@ foreach ($appointments as $appointment) {
     <header class="topbar">
       <div class="topbar-inner">
         <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Appointment approval</span></span></div>
-        <nav class="nav-actions"><a class="nav-link" href="index.php">Admin Portal</a><a class="nav-link" href="donor-records.php">Donor Records</a></nav>
+        <nav class="nav-actions"><a class="nav-link" href="index.php">Admin Portal</a></nav>
       </div>
     </header>
 

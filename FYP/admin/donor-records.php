@@ -20,7 +20,7 @@ $donors = read_records('donors');
     <header class="topbar">
       <div class="topbar-inner">
         <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Donor records</span></span></div>
-        <nav class="nav-actions"><a class="nav-link" href="index.php">Admin Portal</a><a class="nav-link" href="appointments.php">Appointments</a></nav>
+        <nav class="nav-actions"><a class="nav-link" href="index.php">Admin Portal</a></nav>
       </div>
     </header>
     <main class="container">
@@ -31,12 +31,14 @@ $donors = read_records('donors');
           <?php foreach ($donors as $donor): ?>
             <div class="record-card">
               <div>
-                <strong><?= h((string)($donor['full_name'] ?? 'Unnamed donor')); ?></strong>
-                <span>
-                  <?= h((string)($donor['blood_type'] ?? 'Unknown')); ?> donor,
-                  <?= h((string)($donor['email'] ?? 'No email')); ?>,
-                  <?= h((string)($donor['gender'] ?? 'No gender')); ?>
-                </span>
+                <a href="donor-detail.php?id=<?= h((string)($donor['id'] ?? '')); ?>" style="text-decoration:none; color:inherit;">
+                  <strong><?= h((string)($donor['full_name'] ?? 'Unnamed donor')); ?></strong>
+                  <span>
+                    <?= h((string)($donor['blood_type'] ?? 'Unknown')); ?> donor,
+                    <?= h((string)($donor['email'] ?? 'No email')); ?>,
+                    <?= h((string)($donor['gender'] ?? 'No gender')); ?>
+                  </span>
+                </a>
               </div>
 
               <?php if (($donor['status'] ?? '') !== 'Verified'): ?>

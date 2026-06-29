@@ -38,15 +38,13 @@ if (empty($_SESSION['admin_logged_in'])) {
           </span>
         </div>
         <nav class="nav-actions">
-  <a class="nav-link" href="../index.php">Function Map</a>
-
-  <form method="post" action="../actions.php" style="display:inline;">
-    <input type="hidden" name="action" value="admin_logout">
-    <button type="submit" class="nav-link" style="border:none; background:none; cursor:pointer;">
-      Logout
-    </button>
-  </form>
-</nav>
+          <form method="post" action="../actions.php" style="display:inline;">
+            <input type="hidden" name="action" value="admin_logout">
+            <button type="submit" class="nav-link" style="border:none; background:none; cursor:pointer;">
+              Logout
+            </button>
+          </form>
+        </nav>
       </div>
     </header>
 
