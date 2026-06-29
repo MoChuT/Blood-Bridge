@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manage Announcements</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand"><span class="brand-mark"></span><span><strong class="brand-title">Blood Bridge</strong><span class="brand-subtitle">Announcement management</span></span></div>
+        <nav class="nav-actions"><a class="nav-link" href="index.html">Admin Portal</a><a class="nav-link" href="alerts.html">Matching Alerts</a></nav>
+      </div>
+    </header>
+    <main class="container">
+      <section class="grid grid-2">
+        <div class="panel">
+          <div class="panel-header"><div><h1>Manage Announcement</h1><p>Add, edit, delete and view announcement records.</p></div><span class="pill info">Process 7.0</span></div>
+          <div class="panel-body">
+            <form class="form-grid">
+              <label class="full">Title<input value="MMU Blood Donation Drive"></label>
+              <label>Status<select><option>Published</option><option>Draft</option><option>Deleted</option></select></label>
+              <label>Date<input type="date" value="2026-05-12"></label>
+              <label class="full">Details<textarea>Main Hall, May 12-13, 2026. Bring identification and eat before donating.</textarea></label>
+              <button class="btn-primary full" type="button" data-action="announcement">Save Announcement</button>
+            </form>
+          </div>
+        </div>
+        <aside class="panel">
+          <div class="panel-header"><div><h2>Announcement Records</h2><p>Latest published notices.</p></div><span class="pill ok">Published</span></div>
+          <div class="panel-body records">
+            <div class="record-card"><div><strong>MMU Blood Donation Drive</strong><span>Main Hall, May 12-13, 2026.</span></div><span class="pill ok">Published</span></div>
+            <div class="record-card"><div><strong>O- Donor Request</strong><span>Priority notice for eligible O- donors.</span></div><span class="pill warn">Priority</span></div>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+  <div class="toast"></div>
+</body>
+</html>
