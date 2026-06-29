@@ -111,6 +111,59 @@ switch ($action) {
         redirect_to($back);
 
     case 'update_profile':
+        $oldEmail = (string)($_SESSION['donor_email'] ?? '');
+        $oldPhone = (string)($_SESSION['donor_phone'] ?? '');
+        $newEmail = strtolower(post_value('email'));
+        $newPhone = post_value('phone');
+
+        if ($newEmail !== '' && !filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+            flash('Profile update failed', 'Please enter a valid email address.', 'bad');
+            redirect_to($back);
+        }
+
+        if ($oldEmail === '' && $oldPhone === '') {
+            flash('Profile update failed', 'Please login before modifying your profile.', 'bad');
+            redirect_to('donor-login.php');
+        }
+
+        $duplicate = db()->prepare('SELECT id FROM donors WHERE (email = :email OR phone = :phone) AND email <> :old_email AND phone <> :old_phone LIMIT 1');
+        $duplicate->bindValue(':email', $newEmail);
+        $duplicate->bindValue(':phone', $newPhone);
+        $duplicate->bindValue(':old_email', $oldEmail);
+        $duplicate->bindValue(':old_phone', $oldPhone);
+        $duplicate->execute();
+
+        if ($duplicate->fetch()) {
+            flash('Profile update failed', 'This email or phone number is already used by another donor.', 'bad');
+            redirect_to($back);
+        }
+
+        $statement = db()->prepare(
+            'UPDATE donors
+             SET full_name = :full_name,
+                 blood_type = :blood_type,
+                 phone = :phone,
+                 email = :email,
+                 gender = :gender,
+                 address = :address,
+                 emergency_contact = :emergency_contact
+             WHERE email = :old_email OR phone = :old_phone'
+        );
+        $statement->bindValue(':full_name', post_value('full_name'));
+        $statement->bindValue(':blood_type', post_value('blood_type'));
+        $statement->bindValue(':phone', $newPhone);
+        $statement->bindValue(':email', $newEmail);
+        $statement->bindValue(':gender', post_value('gender'));
+        $statement->bindValue(':address', post_value('address'));
+        $statement->bindValue(':emergency_contact', post_value('emergency_contact'));
+        $statement->bindValue(':old_email', $oldEmail);
+        $statement->bindValue(':old_phone', $oldPhone);
+        $statement->execute();
+
+        $_SESSION['donor_email'] = $newEmail;
+        $_SESSION['donor_phone'] = $newPhone;
+        $_SESSION['donor_name'] = post_value('full_name');
+
         append_record('profile_updates', [
             'full_name' => post_value('full_name'),
             'blood_type' => post_value('blood_type'),
@@ -119,9 +172,9 @@ switch ($action) {
             'gender' => post_value('gender'),
             'address' => post_value('address'),
             'emergency_contact' => post_value('emergency_contact'),
-            'status' => 'Pending admin review',
+            'status' => 'Updated',
         ]);
-        flash('Profile update submitted', 'Your profile update request has been saved.');
+        flash('Profile updated', 'Your profile information has been changed.');
         redirect_to($back);
 
     case 'upload_document':
